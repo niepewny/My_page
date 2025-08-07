@@ -1,1 +1,4 @@
-/build/
+# CMake / build
+build/
+cmake-build-*/
+out/

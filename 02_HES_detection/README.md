@@ -1,4 +1,4 @@
-# Handwritten Semantic Analysis of Electronic Schematics (Object Detection + Connection Parsing)
+# Handwritten Electronic Schematics Analysis (Object Detection + Connection Parsing)
 
 > **Goal.** Detect electronic components on schematic images and reconstruct their connectivity (who is wired to whom). The project explores training object detectors on a controlled, semi-synthetic dataset and converting detections into a connection matrix.
 
@@ -40,7 +40,7 @@ Detailed generator documentation lives in `dataset_generator/README.md` (not rep
 
 ### Motivation
 
-As part of the task, we were required to develop an algorithm that could work with various types of data — both hand-drawn and digitally created — and on different background types. The only dataset we found contained American-style symbols. Our project supervisor suggested creating a dataset manually. However, this would involve tedious and time-consuming manual work: initially to draw the schematics, and then to annotate each object. Moreover, even if such a dataset were created, it would likely still be too small to effectively train a large neural network model.
+As part of the task, we were required to develop an algorithm that could work with various types of data - both hand-drawn and digitally created - and on different background types. The only dataset we found contained American-style symbols. Our project supervisor suggested creating a dataset manually. However, this would involve tedious and time-consuming manual work: initially to draw the schematics, and then to annotate each object. Moreover, even if such a dataset were created, it would likely still be too small to effectively train a large neural network model.
 
 The alternative idea was to draw individual circuit elements instead of entire schematics (initially, we also planned to draw a few full hand-drawn paths, which may still be implemented in the future). These elements can be heavily augmented using affine and perspective transformations, distortion, transparency, noise, Gaussian blur, etc. - providing scalable and varied augmentation possibilities. This approach also enables easy placement of components on different background types without redrawing them - expanding the image dataset is sufficient. In this way, a large and diverse dataset can be created semi-automatically. If an error is later discovered, the dataset can be regenerated fully automatically without repeating the drawing process.
 
