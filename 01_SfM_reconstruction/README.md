@@ -76,7 +76,6 @@ The pipeline includes:
 ## Installation Guide
 
 > **Tested on Windows 11 × MSVC 2022**.  
-> The CMake script is fully portable — the same steps work on Linux if your toolchain can find Qt, OpenCV + contrib, PCL and CUDA.
 
 ---
 

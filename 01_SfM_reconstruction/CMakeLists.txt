@@ -11,31 +11,29 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# Jeśli QTDIR jest ustawione w środowisku, dodaj do prefix path (pomocne na Windows)
+# If QTDIR is set in env
 if(DEFINED ENV{QTDIR})
   list(APPEND CMAKE_PREFIX_PATH $ENV{QTDIR})
 endif()
 
-# Pakiety
+# Packages
 find_package(Qt5 5.12 REQUIRED COMPONENTS Widgets)  # Widgets pociągnie Gui i Core
 find_package(OpenCV REQUIRED)
 find_package(PCL 1.3 REQUIRED COMPONENTS common io filters visualization)
 
-# Opcjonalnie OpenMP
+# OpenMP
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)
   message(STATUS "OpenMP found")
 endif()
 
-# Ścieżki źródeł
+# Source paths
 set(FORMS_DIR   "${CMAKE_SOURCE_DIR}/forms")
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 set(SOURCE_DIR  "${CMAKE_SOURCE_DIR}/src")
 
-# AutoUIC będzie przeszukiwał forms/
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_AUTOUIC_SEARCH_PATHS} ${FORMS_DIR})
 
-# Zbiór źródeł (ok do tego projektu; świadomość, że GLOB nie wykrywa automatycznie nowych plików w niektórych IDE)
 file(GLOB_RECURSE SOURCES
   "${FORMS_DIR}/*.ui"
   "${FORMS_DIR}/*.qrc"
@@ -43,7 +41,7 @@ file(GLOB_RECURSE SOURCES
   "${SOURCE_DIR}/*.cpp"
 )
 
-# Aplikacja GUI na Windows (WIN32).
+# GUI for Windows
 add_executable(3D_Reconstruction WIN32 ${SOURCES})
 
 # Include’y tylko dla targetu
@@ -54,7 +52,7 @@ target_include_directories(3D_Reconstruction PRIVATE
   ${PCL_INCLUDE_DIRS}
 )
 
-# Definicje z PCL (np. VTK, itp.)
+# PCL
 add_definitions(${PCL_DEFINITIONS})
 
 # Linkowanie — bez twardych ścieżek do .lib
@@ -64,12 +62,7 @@ target_link_libraries(3D_Reconstruction PRIVATE
   ${PCL_LIBRARIES}
 )
 
-# OpenMP (jeśli jest)
+# OpenMP
 if(OpenMP_CXX_FOUND)
   target_link_libraries(3D_Reconstruction PRIVATE OpenMP::OpenMP_CXX)
-endif()
-
-# Przy MSVC możesz chcieć większe obj-y (duże template’y PCL)
-if(MSVC)
-  target_compile_options(3D_Reconstruction PRIVATE /bigobj)
 endif()
