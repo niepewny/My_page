@@ -179,7 +179,7 @@ Tested on dataset [from this link](https://cvg.cit.tum.de/data/datasets/3drecons
 
 **Point cloud created with Meshroom with FAST and AKAZE**
 
-![Point cloud meshroom](images/meshroom.jpg)
+![Point cloud meshroom](images/meshroom_fast_akaze.jpg)
 
 **Point cloud created with Meshroom with SIFT**
 

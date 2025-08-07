@@ -70,7 +70,7 @@ Both major compromises should be addressed in future development.
   <tr>
     <td>
       <b>Example of image of class "C"</b><br>
-      <img src="images\C.png" width="200">
+      <img src="images\C.jpg" width="200">
     </td>
     <td>
       <b>Example of image of no class</b><br>
