@@ -1,0 +1,19 @@
+# Core
+torch>=2.1
+torchvision>=0.16
+numpy
+pillow
+opencv-python
+matplotlib
+tqdm
+dill
+gdown
+tensorboard
+roboflow
+
+# COCO API (cross-platform)
+pycocotools; platform_system != "Windows"
+pycocotools-windows; platform_system == "Windows"
+
+# Notebooks
+jupyter

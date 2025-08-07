@@ -1,0 +1,41 @@
+{
+  "background_dir": "../../ds/background/",
+  "objects_dir": "../../ds/parts/",
+  "output_path": "../../ds/results/",
+
+  "num_of_sets": 3,
+  "images_per_set": 3,
+
+  "space_x": 10,
+  "space_y": 10,
+  "min_components_per_img": 5,
+  "max_components_per_img": 9,
+  "max_trials": 5,
+
+  "symbols": ["C", "D", "L", "R", "T", "Z", "S"],
+
+  "output_size": [200, 200],
+  "min_distance_between_objects": 10,
+  "normalized_background_size": [1500, 1500],
+  "normalized_object_size": [300, 300],
+
+  "random_image_symbol": "S",
+
+  "drawing_lines_max_trials": 5,
+  "line_iterator_skip": 20,
+  "min_line_thickness": 8,
+  "max_line_thickness": 14,
+  "min_line_blur_kernel_size": 3,
+  "max_line_blur_kernel_size": 23,
+
+  "min_random_lighting_intensity": 0.75,
+  "max_random_lighting_intensity": 1.25,
+  "min_random_lighting_radius": 50,
+  "max_random_lighting_radius": 200,
+  "number_of_light_spots": 10,
+  "lighting_blur_kernel_size": 601,
+
+  "min_image_blur_kernel_size": 3,
+  "max_image_blur_kernel_size": 21,
+  "no_blur_probability": 0.3
+}

@@ -1,0 +1,51 @@
+# Notebooks
+.ipynb_checkpoints/
+
+# Data / artifacts / runs
+data/
+artifacts/
+outputs/
+runs/
+checkpoints/
+logs/
+wandb/
+dataset/
+
+# Model files
+*.pt
+*.pth
+*.pkl
+*.ckpt
+*.onnx
+
+# Caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.npy
+*.npz
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Virtual envs
+.venv/
+venv/
+env/
+ENV/
+*.env
+.env
+.env.*
+
+# Archives / large blobs
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Local configs
+config.local.json
