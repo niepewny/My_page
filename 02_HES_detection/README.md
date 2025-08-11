@@ -70,31 +70,31 @@ Both major compromises should be addressed in future development.
   <tr>
     <td>
       <b>Example of image of class "C"</b><br>
-      <img src="images\C.jpg" width="200">
+      <img src="images/C.jpg" width="200">
     </td>
     <td>
       <b>Example of image of no class</b><br>
-      <img src="images\S.jpg" width="200">
+      <img src="images/S.jpg" width="200">
     </td>
   </tr>
   <tr>
     <td>
       <b>Example of background image</b><br>
-      <img src="images\background.jpg" width="200">
+      <img src="images/background.jpg" width="200">
     </td>
     <td>
       <b>Example of image of class "L"</b><br>
-      <img src="images\L.jpg" width="200">
+      <img src="images/L.jpg" width="200">
     </td>
   </tr>
 </table>
 
 Example of what happened, when the model was trained without added lines: on the left - initial prediction, on the right - prediction after joining objects randomly.
-![Image without added lines](images\fail_example.jpg)
+![Image without added lines](images/fail_example.jpg)
 
 Image with generated lines:
 
-![Image with added lines](images\with_lines.jpg)
+![Image with added lines](images/with_lines.jpg)
 
 **Note: Dataset not included in the repository. Please contact the author if needed.**
 ---
@@ -109,7 +109,7 @@ In the beginning we used **Faster R-CNN (ResNet-50)**: Training settings were ke
 
 Training and validation plots provide information about the model's performance over 20 epochs:
 
-![YOLO training curves — placeholder](images\YOLO_training_curves.jpg)
+![YOLO training curves — placeholder](images/YOLO_training_curves.jpg)
 
 Training and validation plots provide information about the model's performance over 20 epochs:
 Box loss for both training and validation systematically decreases, which means the model improves its bounding box predictions over time.
@@ -162,8 +162,8 @@ Some misclassifications occurred, primarily involving confusion with the 'backgr
 
 Visualization of results on real data:
 
-![YOLO results1](images\real1.jpg)
-![YOLO results2](images\real2.jpg)
+![YOLO results1](images/real1.jpg)
+![YOLO results2](images/real2.jpg)
 
 
 ---
@@ -186,7 +186,7 @@ The connection extraction procedure consists of the following steps:
 - Average correctness around 92% on simpler layouts; with >= 6 components per image, around **84%** (accuracy drops with clutter and near-colinear wires).
 - Algorithm does not work when the background is squared or lined paper!
 
-![Connection parsing](images\connection_matrix.jpg)
+![Connection parsing](images/connection_matrix.jpg)
 
 ```
 Connection matrix:
