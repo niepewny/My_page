@@ -1,19 +1,18 @@
-# Anomaly detection - detecting unauthorized mouse movements
 ## Balabit Mouse Dynamics Challenge
 
-The "Balabit Mouse Dynamics Challenge" dataset contains raw mouse movement logs within sessions: timestamp, cursor position, and button state. The data is split into training and test parts.  
+The **Balabit Mouse Dynamics Challenge** dataset contains raw mouse movement logs within sessions: *timestamp*, cursor position, and button state. The data is split into **training** and **test** parts.  
 The training set comprises session subsets for ten users (IDs: 7, 9, 12, 15, 16, 20, 21, 23, 29, 35); each session belongs to its corresponding user.  
-In the test set, some sessions were performed by unauthorized users. Labels for a subset of these sessions are provided in a CSV file — this was used to construct the test set in the project.
+In the test set, some sessions were performed by **unauthorized** users; labels for a subset of these sessions are provided in a CSV file — this was used to construct the test set in the project.
 
 ---
 
 ## Overall Approach
 
-The goal was to select one user and build a detector for that user using classic ML algorithms.  
-Models were trained to classify this user’s actions as authorized (0) and actions from all other users as unauthorized/anomalies (1).
+The goal was to select **one user** and build a detector for that user using classic ML algorithms.  
+Models were trained to classify this user’s actions as **authorized (0)** and actions from all other users as **unauthorized/anomalies (1)**.
 
-- **Training:** classification of individual actions (after segmentation).  
-- **Testing:** evaluation per action and per session (session score = average of its action-level scores).
+- **Training:** classification of individual **actions** (after segmentation).  
+- **Testing:** evaluation per **action** and per **session** (session score = average of its action-level scores).
 
 **Pipeline:**  
 1. **Segmentation** of sessions into actions and extraction of **37 features** (following [1]).  
@@ -22,18 +21,18 @@ Models were trained to classify this user’s actions as authorized (0) and acti
 
 **Thresholding / Hyperparameters:**  
 - **Unsupervised:** *fixed‑FPR thresholding* (target false positive rate at the action level).  
-- **Supervised:** tuned by ROC‑AUC using a validation set that includes a small portion of unauthorized users **(≈10% of the overall training set)** to preserve class imbalance.
+- **Supervised:** tuned by **ROC‑AUC** using a validation set that includes a small portion of unauthorized users (≈10% of the overall training set) to preserve class imbalance.
 
-**Evaluation:** on the standard test split (contains both authorized and unauthorized) using ROC‑AUC and PR‑AUC.
+**Evaluation:** on the standard test split (contains both authorized and unauthorized) using **ROC‑AUC** and **PR‑AUC**.
 
 ---
 
-## Segmentation and Features
+## Segmentation and Features (37)
 
 Segmentation and feature definitions follow [1]. In total **37 features** were computed, including:
 
 - **Statistics (mean, std, min, max)** for:  
-  velocities (*vx*, *vy*, overall *v*), acceleration, angular velocity, curvature, and jerk.  
+  velocities (*vx*, *vy*, overall *v*), acceleration, angular velocity, curvature, and **jerk**.  
 - **Action duration.**  
 - **Trajectory length.**  
 - **Start‑to‑end distance.**  
@@ -46,13 +45,13 @@ Segmentation and feature definitions follow [1]. In total **37 features** were c
 
 **Data cleaning:**  
 - duplicates removed,  
-- scroll‑wheel events filtered out,  
+- scroll‑wheel events filtered out (per [1], ~42% of test sessions contain this attribute),  
 - where the time derivative equals 0, values are approximated from neighbors; if all derivatives are 0, the action is discarded,  
-- actions with fewer than 5 points are discarded.
+- actions with fewer than **5 points** are discarded.
 
 **Processing:**  
-- **Continuous** features - StandardScaler (fit on the reference user’s data),  
-- **action_type** - **one‑hot**; a consistent set of one‑hot columns is maintained between train/test (reindexing as needed),  
+- **Continuous** features → **StandardScaler** (fit on the reference user’s data),  
+- **action_type** → **one‑hot**; a consistent set of one‑hot columns is maintained between train/test (reindexing as needed),  
 - data saved per user to `.pkl` files.
 
 > Note: for pipeline consistency, standardization was applied globally; not all models strictly require it (e.g., Isolation Forest, XGBoost), but we kept a uniform input format.
@@ -109,22 +108,35 @@ SVM:
     kernel: [poly, rbf]
     balancing: [proportional, SMOTE]
 ```
+
+> In practice, it’s cleaner to configure PCA/whitening at the **pipeline level** rather than per‑model (ensures consistent experiments).
+
 ---
 
 ## Statistical Analysis of the Dataset
 
 Both the train and test splits contain three action types: **MM**, **PC**, **DD**.  
 In the training split: ~**21%** MM, **68%** PC, **11%** DD (test shows very similar proportions).  
-Average number of actions per training session ~ **940** (min 237, max 2488).  
+Average number of actions per **training** session ≈ **940** (min 237, max 2488).  
 **Test** sessions are shorter: average **50** actions (min 4, max 175).
 
 ---
 
 ## Preparing the Dataset for Experiments
 
-The target user is treated as authorized. All of this user’s sessions are saved as the training set.  
-Continuous features are standardized using StandardScaler (fit on the target user); the scaler object is saved and reused consistently in subsequent stages (train/val/test).  
+The target user is treated as **authorized**. All of this user’s sessions are saved as the **training set**.  
+Continuous features are standardized using **StandardScaler** (fit on the target user); the scaler object is saved and reused consistently in subsequent stages (train/val/test).  
 Validation and test sets are formed by adding actions/sessions from other users in controlled proportions (validation ≈ **10%** “unauthorized” within the training process for supervised models).
+
+---
+
+## Practical Notes (operational)
+
+- Report **PR‑AUC** and **ROC‑AUC**, and also show **F1 / Precision / Recall at τ** (threshold chosen on validation and fixed on test).  
+- Maintain a **consistent one‑hot column set** between train and test (reindex using the training list).  
+- Save artifacts: `scaler.pkl`, `ohe_cols.json`, `df_user*.pkl`.  
+- For session‑level evaluation, state the aggregation explicitly (mean/median/top‑k).  
+- If **AUC ≈ 1** at the session level, add a sanity check (e.g., LOSO or time‑based split) and a brief note that strong action‑level separation tends to accumulate at the session level.
 
 ---
 

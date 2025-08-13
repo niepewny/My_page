@@ -1,0 +1,67 @@
+all_users: [7, 9, 12, 15, 16, 20, 21, 23, 29, 35]
+main_user: 9
+
+cv_number: 6
+
+K_means:
+  param_grid:
+    n_clusters: [1, 2, 3, 4, 5, 6, 7, 8]
+    n_components: [4, 16, 15, 24, 32, null]
+    whiten: [true]
+    alpha: [0.2]
+
+Isolation_forest:
+  param_grid:
+    n_components: [null]
+    n_estimators: [32, 64, 100, 192]
+    max_samples: [0.1, 0.4, 0.7, 1.0]
+    max_features: [0.5, 0.75, 1.0]
+    bootstrap: [true, false]
+    alpha: [0.2]
+
+XGBoost:
+  param_grid:
+    n_components: [null]
+    max_depth: [3, 6, 9]
+    learning_rate: [0.01, 0.1, 0.2]
+    n_estimators: [50, 100, 200]
+    max_leaves: [8, 16, 32, 64, 128]
+    balancing: [proportional, SMOTE]
+
+SVM:
+  param_grid:
+    n_components: [null]
+    kernel: [poly, rbf]
+    balancing: [proportional, SMOTE]
+
+paths:
+  raw_data_root: Mouse-Dynamics-Challenge-master
+  preprocessed_data: data
+  one_hot_encoding: models/ohe.pkl
+  scaler: models/scaler.pkl
+
+  K_means:
+    all_results: results/kmeans_all_results.json
+    best_results: results/kmeans_best_params.json
+    model: models/kmeans_model.pkl
+    preproc: models/kmeans_preproc.pkl
+
+  Isolation_forest:
+    all_results: results/if_all_results.json
+    best_results: results/if_best_params.json
+    model: models/if_model.pkl
+    preproc: models/if_preproc.pkl
+
+  XGBoost:
+    all_results: results/xgb_all_results.json
+    best_results: results/xgb_best_params.json
+    model: models/xgb_model.pkl
+    preproc: models/xgb_preproc.pkl
+    
+  SVM:
+    all_results: results/svm_all_results.json
+    best_results: results/svm_best_params.json
+    model: models/svm_model.pkl
+    preproc: models/svm_preproc.pkl
+         
+  
