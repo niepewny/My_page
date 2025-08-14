@@ -157,20 +157,7 @@ class SupervisedTrainer(BaseTrainer):
         y_tr = self.y[tr_idx]
         y_va = self.y[va_idx]
         return X_tr, X_va, y_tr, y_va
-    
-    def fit_test(self, clf, Z_tr, y_tr, Z_va, y_va, params):
-        clf2 = clone(clf)
-        if params.get("balancing", None) == "SMOTE":
-            sm = SMOTE(random_state=42)
-            Z_tr_sm, y_tr_sm = sm.fit_resample(Z_tr, y_tr)
-            clf2.fit(Z_tr_sm, y_tr_sm)
-            s = clf2.predict_proba(Z_va)[:, 1]
-        else:
-            clf2.fit(Z_tr, y_tr)
-            a = clf2.predict_proba(Z_va)
-            print(a)
-            s = clf2.predict_proba(Z_va)[:, 1]
-        return roc_auc_score(y_va.astype(float), s)
+
     
 class Numerical_trainer(ABC):
     """
@@ -319,6 +306,18 @@ class XGBoostTrainer(Universal_trainer, SupervisedTrainer):
             if pos > 0:
                 clf.set_params(scale_pos_weight=neg / pos)
         return clf
+    
+    def fit_test(self, clf, Z_tr, y_tr, Z_va, y_va, params):
+        clf2 = clone(clf)
+        if params.get("balancing", None) == "SMOTE":
+            sm = SMOTE(random_state=42)
+            Z_tr_sm, y_tr_sm = sm.fit_resample(Z_tr, y_tr)
+            clf2.fit(Z_tr_sm, y_tr_sm)
+            s = clf2.predict_proba(Z_va)[:, 1]
+        else:
+            clf2.fit(Z_tr, y_tr)
+            s = clf2.predict_proba(Z_va)[:, 1]
+        return roc_auc_score(y_va.astype(float), s)
 
     def final_refit(self, best_params):
         Z_all, preproc = self.make_pca(best_params.get("n_components", None), self.X,
@@ -350,8 +349,20 @@ class SVMTrainer(Numerical_trainer, SupervisedTrainer):
         # class_weight for proportional
         if params.get("balancing", None) == "proportional":
             keep["class_weight"] = "balanced"
-        clf = svm.SVC(probability=True, random_state=42, **keep)
+        clf = svm.SVC(probability=False, random_state=42, **keep)
         return clf
+    
+    def fit_test(self, clf, Z_tr, y_tr, Z_va, y_va, params):
+        clf2 = clone(clf)
+        if params.get("balancing", None) == "SMOTE":
+            sm = SMOTE(random_state=42)
+            Z_tr_sm, y_tr_sm = sm.fit_resample(Z_tr, y_tr)
+            clf2.fit(Z_tr_sm, y_tr_sm)
+            s = clf2.decision_function(Z_va).ravel()
+        else:
+            clf2.fit(Z_tr, y_tr)
+            s = clf2.decision_function(Z_va).ravel()
+        return roc_auc_score(y_va.astype(float), s)
 
     def final_refit(self, best_params):
         Z_all, pca = self.make_pca(best_params.get("n_components", None), self.X,

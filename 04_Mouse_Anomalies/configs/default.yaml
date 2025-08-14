@@ -1,5 +1,5 @@
 all_users: [7, 9, 12, 15, 16, 20, 21, 23, 29, 35]
-main_user: 9
+main_user: 12
 
 cv_number: 6
 
@@ -30,7 +30,7 @@ XGBoost:
 
 SVM:
   param_grid:
-    n_components: [null]
+    n_components: [32, null]
     kernel: [poly, rbf]
     balancing: [proportional, SMOTE]
 
