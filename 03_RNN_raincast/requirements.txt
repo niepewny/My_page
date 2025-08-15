@@ -1,0 +1,10 @@
+torch
+torchvision
+pytorch-lightning
+h5py
+matplotlib
+wandb
+hydra-core
+omegaconf
+numpy
+pandas
