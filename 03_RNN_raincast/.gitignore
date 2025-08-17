@@ -5,6 +5,6 @@ venvGSN/
 venv/
 .venv/
 checkpoints/
-outputs/
+wandb/
 data/
 
