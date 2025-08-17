@@ -7,17 +7,17 @@ timestamp: ${now:%d_%H-%M-%S}
 experiment_id: hydra_tests_D${model.model.depth}_K${model.model.kernel_size}_H${model.model.hidden_channels}_SS${data.sequence_length}.${data.step}_${timestamp}
 
 wandb:
-    key: "WBKEY"
+    key: "WANDB_KEY"
     project_name: "Rain_prediction"
 
 data:
     _target_: src.data_modules.SEVIR_data_loader.ConvLSTMSevirDataModule
-    files_dir: "PATH/TO/DATASET"
+    files_dir: "DATASET_DIR_PATH"
     sequence_length: 8
     step: 6
     width: 64
     height: 64
-    batch_size: 1024
+    batch_size: 256
     num_workers: 2
     train_files_percent: 0.7
     val_files_percent: 0.15
@@ -40,6 +40,7 @@ checkpoint:
 
 model:
     _target_: src.predictors.rain_predictor.RainPredictor
+    _recursive_: false
     mapping_kernel_size: 3
     learning_rate: 0.01
     scheduler_step: 10

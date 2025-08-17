@@ -5,9 +5,9 @@ from pytorch_lightning.loggers import WandbLogger
 import hydra
 from hydra.utils import instantiate
 from omegaconf import DictConfig
+from omegaconf import OmegaConf
 
 import wandb
-from omegaconf import OmegaConf
 from datetime import datetime
 
 # Custom
@@ -15,7 +15,7 @@ from src.utils.Logger import ImagePredictionLogger
 
 OmegaConf.register_new_resolver("now", lambda pattern: datetime.now().strftime(pattern))
 
-@hydra.main(config_path=".", config_name="config", version_base="1.1")
+@hydra.main(config_path="configs", config_name="default", version_base="1.1")
 def main(cfg: DictConfig):
     wandb.login(key=cfg.wandb.key)
 

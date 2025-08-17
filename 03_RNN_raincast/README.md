@@ -44,10 +44,14 @@ The report was created as a team.
 |   |-demo.ipynb                # demo notebook
 |- data/
 |   |- sample_ir069_9f.npz      # tiny sample (for demo only)
-|- checkpoints/                 # sample checkpoint
+|- outputs/                     # sample checkpoint
 |- docs/
 |   |- img/                     # figures used in README
 |   |- report.pdf               # detailed report (PL)
+|- hydra_tests_sample/          # sample results of training
+|   |- .hydra/
+|   |- model/                     
+|       |- model_sample_.ckpt   # sample checkpoint
 |- train.py                     # training
 |- requirements.txt
 |- .gitignore
@@ -58,7 +62,7 @@ The report was created as a team.
 
 ## Modifiable architecture structure
 
-```bash
+```
 Input: batch x T x C x H x W
         |
         v
@@ -99,8 +103,9 @@ For convenience, we include a *tiny* demo sample under `data/sample_ir069_9f.npz
 
 **Get the data (recommended):**
 - Follow SEVIR instructions (AWS CLI) to download the IR069 HDF5s.  
-- Keep paths configurable via Hydra (see `configs/data/*.yaml`).  
-- Do **not** commit large HDF5 files to the repo; use a local path or LFS/releases if needed.
+- Keep paths configurable via Hydra (see `configs/data/default.yaml`).  
+
+![SEVIR_vis](docs/img/SEVIR.jpg)
 
 ---
 
@@ -116,6 +121,9 @@ source .venv/bin/activate   # (Windows: .venv\Scripts\activate)
 pip install -r requirements.txt
 ```
 Install PyTorch with CUDA following the official instructions for your CUDA/driver version.
+
+In In ``configs\default.yaml`` change **data.files_dir** to SEVIR dataset and **wandb.key** to your Wandb key.
+
 ---
 
 ## Quickstart
@@ -129,12 +137,9 @@ The notebook loads `data/sample_ir069_9f.npz` and runs a forward pass with a sma
 
 ### 2) Train & evaluate (Hydra + Lightning)
 ```bash
-# Example: ConvLSTM
-python train.py model.type=convlstm model.hidden_channels=8 model.kernel_size=7 model.depth=1 \
-               data.sequence_len=49 trainer.max_epochs=30
-
-# Evaluate a checkpoint (adjust path)
-python train.py mode=eval ckpt_path=checkpoints/sample.pt
+# Example
+python train.py model.model.hidden_channels=8 model.model.kernel_size=7 model.mapping_kernel_size=3 \
+               data.sequence_len=15 trainer.max_epochs=30
 ```
 
 **Tips**
@@ -163,7 +168,7 @@ We use a PyTorch Lightning **DataModule** to:
 - apply transforms (resize to `height×width`, step, cropping, normalization).
 
 Tune these common knobs:
-- `sequence_len` (default 49), `step` (subsampling stride),  
+- `sequence_len`, `step` (subsampling stride),  
 - `height`, `width`, `batch_size`, `num_workers`,  
 - `train/val/test percents` for splitting.
 
@@ -182,6 +187,14 @@ Tune these common knobs:
 | ConvLSTM |   3    |   2   |  12    | 0.034 |
 
 > We also observed that **BatchNorm inside the RNN cell did not improve** validation/test performance. Placing BN outside the cell helped stabilize learning for LSTM variants in our setting.
+
+### Sample training course graphs:
+
+![training_graphs](docs/img/training_graphs.jpg)
+
+### Sample results
+
+![results](docs/img/visualization.jpg)
 
 ---
 

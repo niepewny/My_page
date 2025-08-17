@@ -1,47 +1,41 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-from omegaconf import DictConfig
-from omegaconf import OmegaConf
-import hydra
-
-
-
-def _to_container(x):
-    return OmegaConf.to_container(x, resolve=True) if isinstance(x, DictConfig) else x
 
 
 class RainPredictor(pl.LightningModule):
 
     def __init__(self, model, mapping_activation, mapping_kernel_size, learning_rate, loss_metrics, scheduler_step, scheduler_gamma):
         super().__init__()
+        self.save_hyperparameters()
         
-        self.save_hyperparameters({
-            "model": _to_container(model),
-            "mapping_activation": _to_container(mapping_activation),
-            "mapping_kernel_size": mapping_kernel_size,
-            "learning_rate": learning_rate,
-            "loss_metrics": _to_container(loss_metrics),
-            "scheduler_step": scheduler_step,
-            "scheduler_gamma": scheduler_gamma,
-        })
-        
-        self.model = hydra.utils.instantiate(self.hparams.model)
-        self.mapping_activation = hydra.utils.instantiate(self.hparams.mapping_activation)
-        self.loss = hydra.utils.instantiate(self.hparams.loss_metrics)
-        self.lr = self.hparams.learning_rate
-        self.scheduler_step = self.hparams.scheduler_step
-        self.scheduler_gamma = self.hparams.scheduler_gamma
+        self.model = model
+        self.mapping_activation = mapping_activation
+        self.lr = learning_rate
+        self.loss = loss_metrics
+        self.scheduler_step = scheduler_step
+        self.scheduler_gamma = scheduler_gamma
 
-        hidden_channels = self.hparams.model["hidden_channels"]
-        k = self.hparams.mapping_kernel_size
+        hidden_channels = model.hidden_channels
 
         self.mapping_layer = nn.Sequential(
             nn.BatchNorm2d(hidden_channels),
-            nn.Conv2d(hidden_channels, hidden_channels, kernel_size=k, padding=k // 2, bias=False),
+            nn.Conv2d(
+                in_channels=hidden_channels,
+                out_channels=hidden_channels,
+                kernel_size=mapping_kernel_size,
+                padding=mapping_kernel_size // 2,
+                bias=False
+            ),
             nn.BatchNorm2d(hidden_channels),
-            nn.Conv2d(hidden_channels, 1, kernel_size=1, padding=0, bias=False),
-        )            
+            nn.Conv2d(
+                in_channels=hidden_channels,
+                out_channels=1,
+                kernel_size=1,
+                padding=0,
+                bias=False
+            ),
+        )      
           
         self.current_epoch_training_loss = torch.tensor(0.0)
         self.training_step_outputs = []
@@ -133,9 +127,6 @@ class RainPredictor(pl.LightningModule):
         avg_loss = outs.mean()
         self.log('test_loss_epoch', avg_loss, on_epoch=True)
         self.test_step_outputs.clear()
-        
-    def on_save_checkpoint(self, ckpt):
-        ckpt["hyper_parameters"] = dict(self.hparams)        
 
     # We should decide if we should stick to Adam/scheduler or dump it to hydra
     def configure_optimizers(self):

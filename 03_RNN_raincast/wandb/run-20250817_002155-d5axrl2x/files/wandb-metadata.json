@@ -1,0 +1,40 @@
+{
+  "os": "Windows-10-10.0.26100-SP0",
+  "python": "CPython 3.10.11",
+  "startedAt": "2025-08-16T22:21:55.847987Z",
+  "program": "C:\\Users\\wmaku\\OneDrive\\Pulpit\\My_page\\03_RNN_raincast\\train.py",
+  "codePath": "03_RNN_raincast\\train.py",
+  "codePathLocal": "train.py",
+  "git": {
+    "remote": "https://github.com/niepewny/My_page.git",
+    "commit": "2693e5f435f2acd7fd326d0c5952785ad0f00d0b"
+  },
+  "email": "wmakurat1@gmail.com",
+  "root": ".",
+  "host": "Wojciech",
+  "executable": "C:\\Users\\wmaku\\OneDrive\\Pulpit\\My_page\\03_RNN_raincast\\.venv\\Scripts\\python.exe",
+  "cpu_count": 6,
+  "cpu_count_logical": 12,
+  "gpu": "Quadro P1000",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "230716121088",
+      "used": "197959860224"
+    }
+  },
+  "memory": {
+    "total": "16705990656"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "Quadro P1000",
+      "memoryTotal": "4294967296",
+      "cudaCores": 512,
+      "architecture": "Pascal",
+      "uuid": "GPU-ea5f6b83-a87c-da56-4e86-2e29ba0eafa9"
+    }
+  ],
+  "cudaVersion": "12.9",
+  "writerId": "uhbx865v8fxvi4tieqgee8m41wt38nfv"
+}

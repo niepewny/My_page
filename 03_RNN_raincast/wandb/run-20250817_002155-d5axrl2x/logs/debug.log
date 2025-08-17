@@ -1,0 +1,30 @@
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_setup.py:_flush():80] Current SDK version is 0.21.0
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_setup.py:_flush():80] Configure stats pid to 17508
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_setup.py:_flush():80] Loading settings from C:\Users\wmaku\.config\wandb\settings
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_setup.py:_flush():80] Loading settings from C:\Users\wmaku\OneDrive\Pulpit\My_page\03_RNN_raincast\wandb\settings
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_init.py:setup_run_log_directory():703] Logging user logs to .\wandb\run-20250817_002155-d5axrl2x\logs\debug.log
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_init.py:setup_run_log_directory():704] Logging internal logs to .\wandb\run-20250817_002155-d5axrl2x\logs\debug-internal.log
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_init.py:init():830] calling init triggers
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_init.py:init():835] wandb.init called with sweep_config: {}
+config: {'timestamp': '17_00-21-36', 'experiment_id': 'hydra_tests_D1_K5_H8_SS8.6_17_00-21-36', 'wandb': {'key': '40c5c10f4b03fb955b2343280005f183c6e39d70', 'project_name': 'Rain_prediction'}, 'data': {'_target_': 'src.data_modules.SEVIR_data_loader.ConvLSTMSevirDataModule', 'files_dir': 'D:/gsn_dataset/all', 'sequence_length': 8, 'step': 6, 'width': 64, 'height': 64, 'batch_size': 1024, 'num_workers': 2, 'train_files_percent': 0.7, 'val_files_percent': 0.15, 'test_files_percent': 0.15}, 'early_stopping': {'_target_': 'pytorch_lightning.callbacks.early_stopping.EarlyStopping', 'monitor': 'validation_loss', 'patience': 8, 'verbose': False, 'mode': 'min'}, 'checkpoint': {'_target_': 'pytorch_lightning.callbacks.ModelCheckpoint', 'monitor': 'validation_loss', 'dirpath': './model/', 'filename': 'model-{epoch:02d}-{validation_loss:.2f}', 'save_top_k': 3, 'mode': 'min'}, 'model': {'_target_': 'src.predictors.rain_predictor.RainPredictor', 'mapping_kernel_size': 3, 'learning_rate': 0.01, 'scheduler_step': 10, 'scheduler_gamma': 0.1, 'model': {'_target_': 'src.architectures.conv_rnn.ConvRNNCell', 'input_channels': 1, 'hidden_channels': 8, 'kernel_size': 5, 'depth': 1, 'activation': {'_target_': 'torch.nn.ReLU'}}, 'mapping_activation': {'_target_': 'torch.nn.ReLU'}, 'loss_metrics': {'_target_': 'torchmetrics.MeanSquaredError', 'squared': True}}, 'trainer': {'accelerator': 'gpu', 'devices': [0], 'max_epochs': 50, 'num_visualised_samples': 6}, '_wandb': {}}
+2025-08-17 00:21:55,854 INFO    MainThread:17508 [wandb_init.py:init():871] starting backend
+2025-08-17 00:21:56,554 INFO    MainThread:17508 [wandb_init.py:init():874] sending inform_init request
+2025-08-17 00:21:56,595 INFO    MainThread:17508 [wandb_init.py:init():882] backend started and connected
+2025-08-17 00:21:56,599 INFO    MainThread:17508 [wandb_init.py:init():953] updated telemetry
+2025-08-17 00:21:56,695 INFO    MainThread:17508 [wandb_init.py:init():977] communicating run to backend with 90.0 second timeout
+2025-08-17 00:21:57,865 INFO    MainThread:17508 [wandb_init.py:init():1029] starting run threads in backend
+2025-08-17 00:21:58,015 INFO    MainThread:17508 [wandb_run.py:_console_start():2458] atexit reg
+2025-08-17 00:21:58,015 INFO    MainThread:17508 [wandb_run.py:_redirect():2306] redirect: wrap_raw
+2025-08-17 00:21:58,016 INFO    MainThread:17508 [wandb_run.py:_redirect():2375] Wrapping output streams.
+2025-08-17 00:21:58,016 INFO    MainThread:17508 [wandb_run.py:_redirect():2398] Redirects installed.
+2025-08-17 00:21:58,046 INFO    MainThread:17508 [wandb_init.py:init():1075] run started, returning control to user process
+2025-08-17 00:21:58,754 INFO    MainThread:17508 [wandb_run.py:_config_callback():1363] config_cb None None {'model': None, 'mapping_activation': None, 'mapping_kernel_size': 3, 'learning_rate': 0.01, 'loss_metrics': None, 'scheduler_step': 10, 'scheduler_gamma': 0.1}
+2025-08-17 00:23:05,854 INFO    MainThread:17508 [wandb_run.py:_config_callback():1363] config_cb None None {'model': None, 'mapping_activation': None, 'mapping_kernel_size': 3, 'learning_rate': 0.01, 'loss_metrics': None, 'scheduler_step': 10, 'scheduler_gamma': 0.1}
+2025-08-17 00:23:08,334 INFO    MainThread:17508 [wandb_run.py:_finish():2224] finishing run wmakurat1-pw/Rain_prediction/d5axrl2x
+2025-08-17 00:23:08,334 INFO    MainThread:17508 [wandb_run.py:_atexit_cleanup():2423] got exitcode: 0
+2025-08-17 00:23:08,336 INFO    MainThread:17508 [wandb_run.py:_restore():2405] restore
+2025-08-17 00:23:08,336 INFO    MainThread:17508 [wandb_run.py:_restore():2411] restore done
+2025-08-17 00:23:09,669 INFO    MainThread:17508 [wandb_run.py:_footer_history_summary_info():3903] rendering history
+2025-08-17 00:23:09,669 INFO    MainThread:17508 [wandb_run.py:_footer_history_summary_info():3935] rendering summary
+2025-08-17 00:23:09,669 INFO    MainThread:17508 [wandb_run.py:_footer_sync_info():3864] logging synced files

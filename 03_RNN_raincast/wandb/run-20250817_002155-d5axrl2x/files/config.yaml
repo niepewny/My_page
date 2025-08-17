@@ -1,0 +1,129 @@
+_wandb:
+    value:
+        cli_version: 0.21.0
+        e:
+            uhbx865v8fxvi4tieqgee8m41wt38nfv:
+                codePath: 03_RNN_raincast\train.py
+                codePathLocal: train.py
+                cpu_count: 6
+                cpu_count_logical: 12
+                cudaVersion: "12.9"
+                disk:
+                    /:
+                        total: "230716121088"
+                        used: "197959860224"
+                email: wmakurat1@gmail.com
+                executable: C:\Users\wmaku\OneDrive\Pulpit\My_page\03_RNN_raincast\.venv\Scripts\python.exe
+                git:
+                    commit: 2693e5f435f2acd7fd326d0c5952785ad0f00d0b
+                    remote: https://github.com/niepewny/My_page.git
+                gpu: Quadro P1000
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Pascal
+                      cudaCores: 512
+                      memoryTotal: "4294967296"
+                      name: Quadro P1000
+                      uuid: GPU-ea5f6b83-a87c-da56-4e86-2e29ba0eafa9
+                host: Wojciech
+                memory:
+                    total: "16705990656"
+                os: Windows-10-10.0.26100-SP0
+                program: C:\Users\wmaku\OneDrive\Pulpit\My_page\03_RNN_raincast\train.py
+                python: CPython 3.10.11
+                root: .
+                startedAt: "2025-08-16T22:21:55.847987Z"
+                writerId: uhbx865v8fxvi4tieqgee8m41wt38nfv
+        m:
+            - "1": trainer/global_step
+              "6":
+                - 3
+              "7": []
+            - "2": '*'
+              "5": 1
+              "6":
+                - 1
+              "7": []
+        python_version: 3.10.11
+        t:
+            "1":
+                - 1
+                - 9
+                - 41
+                - 50
+                - 103
+            "2":
+                - 1
+                - 9
+                - 41
+                - 50
+                - 103
+            "3":
+                - 2
+                - 7
+                - 13
+                - 16
+                - 66
+            "4": 3.10.11
+            "5": 0.21.0
+            "8":
+                - 3
+            "12": 0.21.0
+            "13": windows-amd64
+checkpoint:
+    value:
+        _target_: pytorch_lightning.callbacks.ModelCheckpoint
+        dirpath: ./model/
+        filename: model-{epoch:02d}-{validation_loss:.2f}
+        mode: min
+        monitor: validation_loss
+        save_top_k: 3
+data:
+    value:
+        _target_: src.data_modules.SEVIR_data_loader.ConvLSTMSevirDataModule
+        batch_size: 1024
+        files_dir: D:/gsn_dataset/all
+        height: 64
+        num_workers: 2
+        sequence_length: 8
+        step: 6
+        test_files_percent: 0.15
+        train_files_percent: 0.7
+        val_files_percent: 0.15
+        width: 64
+early_stopping:
+    value:
+        _target_: pytorch_lightning.callbacks.early_stopping.EarlyStopping
+        mode: min
+        monitor: validation_loss
+        patience: 8
+        verbose: false
+experiment_id:
+    value: hydra_tests_D1_K5_H8_SS8.6_17_00-21-36
+learning_rate:
+    value: 0.01
+loss_metrics:
+    value: null
+mapping_activation:
+    value: null
+mapping_kernel_size:
+    value: 3
+model:
+    value: null
+scheduler_gamma:
+    value: 0.1
+scheduler_step:
+    value: 10
+timestamp:
+    value: 17_00-21-36
+trainer:
+    value:
+        accelerator: gpu
+        devices:
+            - 0
+        max_epochs: 50
+        num_visualised_samples: 6
+wandb:
+    value:
+        key: 40c5c10f4b03fb955b2343280005f183c6e39d70
+        project_name: Rain_prediction
