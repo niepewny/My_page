@@ -41,7 +41,7 @@ Segmentation and feature definitions follow [1]. In total **37 features** were c
 - **Number of points** in an action.  
 - **Sum of angles.**  
 - **Initial acceleration.**  
-- **Action type** (*MM* – Mouse Move, *PC* – Point Click, *DD* – Drag & Drop) — **categorical** (one‑hot).
+- **Action type** (*MM* – Mouse Move, *PC* – Point Click, *DD* – Drag and Drop) — **categorical** (one‑hot).
 
 **Data cleaning:**  
 - duplicates removed,  
@@ -104,7 +104,7 @@ XGBoost:
 
 SVM:
   param_grid:
-    n_components: [16, null]
+    n_components: [32, null]
     kernel: [poly, rbf]
     balancing: [proportional, SMOTE]
 ```
@@ -129,15 +129,113 @@ Continuous features are standardized using **StandardScaler** (fit on the target
 Validation and test sets are formed by adding actions/sessions from other users in controlled proportions (validation ≈ **10%** “unauthorized” within the training process for supervised models).
 
 ---
+## Best configurations
 
-## Practical Notes (operational)
+```json
+K-means:
+{
+    "alpha": 0.2,
+    "n_clusters": 2,
+    "n_components": 15,
+}
 
-- Report **PR‑AUC** and **ROC‑AUC**, and also show **F1 / Precision / Recall at τ** (threshold chosen on validation and fixed on test).  
-- Maintain a **consistent one‑hot column set** between train and test (reindex using the training list).  
-- Save artifacts: `scaler.pkl`, `ohe_cols.json`, `df_user*.pkl`.  
-- For session‑level evaluation, state the aggregation explicitly (mean/median/top‑k).  
-- If **AUC ≈ 1** at the session level, add a sanity check (e.g., LOSO or time‑based split) and a brief note that strong action‑level separation tends to accumulate at the session level.
+Isolation_forest:
+{
+    "alpha": 0.2,
+    "bootstrap": true,
+    "max_features": 1.0,
+    "max_samples": 0.1,
+    "n_components": null,
+    "n_estimators": 64
+}
+
+XGBoost:
+{
+    "balancing": "proportional",
+    "learning_rate": 0.1,
+    "max_depth": 9,
+    "max_leaves": 32,
+    "n_components": null,
+    "n_estimators": 200
+}
+
+SVM:
+{
+    "n_components": 32,
+    "kernel": "rbf",
+    "balancing": "SMOTE",
+}
+```
 
 ---
 
-**[1]** Reference: https://arxiv.org/pdf/1810.04668
+## ROC results
+
+Based on results from [1] for testing, data od **user12** was chosen.
+
+### Per session
+<table>
+  <tr>
+    <td>
+      <b>K-means</b><br>
+      <img src="images/k-means_session.jpg" width="450">
+    </td>
+    <td>
+      <b>Isolation forest</b><br>
+      <img src="images/IF_session.jpg" width="450">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>XGBoost</b><br>
+      <img src="images/XGB_session.jpg" width="450">
+    </td>
+    <td>
+      <b>SVM</b><br>
+      <img src="images/SVM_session.jpg" width="450">
+    </td>
+  </tr>
+</table>
+
+### Per action
+
+<table>
+  <tr>
+    <td>
+      <b>K-means</b><br>
+      <img src="images/k-means_action.jpg" width="450">
+    </td>
+    <td>
+      <b>Isolation forest</b><br>
+      <img src="images/IF_action.jpg" width="450">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>XGBoost</b><br>
+      <img src="images/XGB_action.jpg" width="450">
+    </td>
+    <td>
+      <b>SVM</b><br>
+      <img src="images/SVM_action.jpg" width="450">
+    </td>
+  </tr>
+</table>
+
+> Results of both XGBoost raised initial suspition, but further investigation proved that the results are reliable.
+
+---
+
+## Conclusions
+- Both unsupervised methods (K-means, Isolation Forest) were useful for anomaly detection, especially at the session level. However, classification per action showed very low precision, which confirms that more aggregated data is necessary to obtain stable performance.
+- XGBoost consistently achieved very high AUC values. While initially surprising, these results are consistent with [1] and can be explained by the model’s supervised nature, ability to handle categorical features, and capacity to capture non-linear relationships. In this context, the performance is credible rather than suspicious.
+- SVM generally struggled to capture the structure of the data, even when kernel functions were applied. In some cases (e.g., user7) results were better, which suggests that the method may occasionally align with a particular user’s data distribution. Overall, however, SVM proved unstable and less effective compared to other approaches.
+- PCA improved results for both K-means and SVM. This indicates that PCA successfully reduced noise.
+- For XGBoost, proportional balancing provided better results than SMOTE, suggesting that proportional resampling better preserved the natural structure of the dataset.
+- For SVM SMOTE improved results, however the difference was not significant.
+- It is important to note that PR AUC values are not centered around 0.5 as in ROC, but instead depend on the proportion of positive samples in the dataset. For example, when positives account for ~75% of the data, even a random classifier will yield a PR AUC of about 0.75. This explains why high PR AUC values may appear alongside low ROC AUC values.
+
+---
+## References
+
+**[1]**: https://arxiv.org/pdf/1810.04668
