@@ -37,31 +37,33 @@ SVM:
 paths:
   raw_data_root: Mouse-Dynamics-Challenge-master
   preprocessed_data: data
+  models: models
+  results: results
   one_hot_encoding: models/ohe.pkl
   scaler: models/scaler.pkl
 
   K_means:
-    all_results: results/kmeans_all_results.json
-    best_results: results/kmeans_best_params.json
-    model: models/kmeans_model.pkl
-    preproc: models/kmeans_preproc.pkl
+    all_results_name: kmeans_all_results.json
+    best_results_name: kmeans_best_params.json
+    model_name: kmeans_model.pkl
+    preproc_name: kmeans_preproc.pkl
 
   Isolation_forest:
-    all_results: results/if_all_results.json
-    best_results: results/if_best_params.json
-    model: models/if_model.pkl
-    preproc: models/if_preproc.pkl
+    all_results_name: if_all_results.json
+    best_results_name: if_best_params.json
+    model_name: if_model.pkl
+    preproc_name: if_preproc.pkl
 
   XGBoost:
-    all_results: results/xgb_all_results.json
-    best_results: results/xgb_best_params.json
-    model: models/xgb_model.pkl
-    preproc: models/xgb_preproc.pkl
+    all_results_name: xgb_all_results.json
+    best_results_name: xgb_best_params.json
+    model_name: xgb_model.pkl
+    preproc: xgb_preproc.pkl
     
   SVM:
-    all_results: results/svm_all_results.json
-    best_results: results/svm_best_params.json
-    model: models/svm_model.pkl
-    preproc: models/svm_preproc.pkl
+    all_results_name: svm_all_results.json
+    best_results_name: svm_best_params.json
+    model_name: svm_model.pkl
+    preproc_name: svm_preproc.pkl
          
   
