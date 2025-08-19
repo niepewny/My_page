@@ -131,40 +131,28 @@ Validation and test sets are formed by adding actions/sessions from other users 
 ---
 ## Best configurations
 
-```json
+```yaml
 K-means:
-{
-    "alpha": 0.2,
-    "n_clusters": 2,
-    "n_components": 15,
-}
+    "n_clusters": 2
+    "n_components": 15
 
 Isolation_forest:
-{
-    "alpha": 0.2,
-    "bootstrap": true,
-    "max_features": 1.0,
-    "max_samples": 0.1,
-    "n_components": null,
+    "bootstrap": true
+    "max_features": 1.0
+    "max_samples": 0.1
     "n_estimators": 64
-}
 
 XGBoost:
-{
-    "balancing": "proportional",
-    "learning_rate": 0.1,
-    "max_depth": 9,
-    "max_leaves": 32,
-    "n_components": null,
+    "balancing": "proportional"
+    "learning_rate": 0.1
+    "max_depth": 9
+    "max_leaves": 32
     "n_estimators": 200
-}
 
 SVM:
-{
-    "n_components": 32,
-    "kernel": "rbf",
-    "balancing": "SMOTE",
-}
+    "n_components": 32
+    "kernel": "rbf"
+    "balancing": "SMOTE"
 ```
 
 ---
