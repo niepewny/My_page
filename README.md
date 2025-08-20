@@ -2,7 +2,7 @@
 
 I'm a software developer specialized in AI/ML and computer vision. I have over two years of commercial experience and around five years of academic experience in related fields.
 
-I hold a degree in Mechatronics (specialization: Photonics) from Warsaw University of Technology and I'm currently completing a Master's in Information Technology (also at WUT). During my studies, I’ve focused on deepening my core interests — machine vision and AI, while also exploring how to apply them across different problem domains.
+I hold a degree in Mechatronics (specialization: Photonics) from Warsaw University of Technology and I'm currently completing a Master's in Information Technology (also at WUT). During my studies, I focus on AI (strong in computer vision) and I’m widening into other AI/DS tracks to tackle diverse problem domains.
 
 # About this repository
 
