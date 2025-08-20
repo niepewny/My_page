@@ -210,7 +210,7 @@ Based on results from [1] for testing, data od **user12** was chosen.
   </tr>
 </table>
 
-> Results of both XGBoost raised initial suspition, but further investigation proved that the results are reliable.
+> Results of both XGBoost and SVM raised initial suspition, but further investigation proved that the results are reliable.
 
 ---
 
