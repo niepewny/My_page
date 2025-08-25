@@ -30,6 +30,41 @@ The pipeline includes:
 
 ---
 
+## User-provided constraints
+To increase robustness and reduce false matches in SfM, the system leverages auxiliary data supplied by the user:
+- Z-axis camera rotation - Instead of relying only on ORB's rotation invariance, all keypoints are aligned with a common orientation derived from the camera's approximate Z-axis rotation. This reduces descriptor ambiguity when repeated patterns are present. The picture below (from [1]) shows comparison of the robustness of different descriptors depending on uncorrelated angle of Z-axis camera rotation.
+![ORB_plot](images/ORB-orientation.jpg)
+- Coarse camera orientation and depth hints - Using approximate pose (Euler angles, translation) and expected object depth, the matching search space is narrowed to a region of interest (ROI). This significantly improves correspondence filtering and reduces runtime. 
+
+<table>
+   <tr>
+      <td>
+         <b>Source image with marked key point</b><br>
+         <img src="images/src_picture.jpg" width="250">
+      </td>
+      <td>
+         <b>Target image</b><br>
+         <img src="images/target_picture.jpg" width="250">
+      </td>
+      <td>
+         <b>ROI</b><br>
+         <img src="images/ROI.jpg" width="250">
+      </td>
+   </tr>
+</table>
+
+- Masks - Binary masks are used in two ways:
+   - Preprocessing: removing the background before keypoint detection and applying local histogram equalization inside the ROI.
+   - Filtering: eliminating 3D points that project outside the object mask after triangulation.
+
+![Mask](images/mask.jpg)
+
+
+These constraints act as geometric priors that stabilize reconstruction, especially in scenes with low texture or repeated patterns.
+
+---
+
+
 ## Tech Stack
 
 - C++17
@@ -55,19 +90,19 @@ The pipeline includes:
 ## Limitations and Planned Work
 
 **Known limitations:**
-- No bundle adjustment or dense reconstruction yet — only sparse SfM pipeline is implemented.
-- The codebase has a partially legacy structure — written several years ago and requires cleanup and modularization.
-- Camera parameters are currently passed as a 3×4 projection matrix and decomposed internally. A more intuitive input format (K, R, t) is planned.
+- No bundle adjustment or dense reconstruction yet - only sparse SfM pipeline is implemented.
+- The codebase has a partially legacy structure - written several years ago and requires cleanup and modularization.
+- Camera parameters are currently passed as a 3x4 projection matrix and decomposed internally. A more intuitive input format (K, R, t) is planned.
 - CMake bug workaround: after generation, the `C/C++ Preprocessor Definition` value `"BOOST_ALL_NO_LIB-DBOOST_ALL_NO_LIB"` must be manually corrected to `"BOOST_ALL_NO_LIB"` (PCL-related issue).
 - No input validation: the program does not check for invalid entries (e.g., strings instead of numbers).
 - OpenCV interprets Euler angles with a sign flip, which may affect rotation-dependent components.
-- The PCL visualizer has no preset camera configuration — the user must manually adjust the view.
+- The PCL visualizer has no preset camera configuration - the user must manually adjust the view.
 - The GUI still contains remnants of deprecated functionality (e.g., unused shift controls), and several parameters are hardcoded instead of user-configurable.
 
 **Planned improvements:**
 - Add relative quality metrics: inlier ratio, reprojection error, matching time, and point density.
 - Enable optional use of pose/hint data (currently required).
-- Improve masking logic for performance — current implementation is unoptimized and slow for large keypoint sets.
+- Improve masking logic for performance - current implementation is unoptimized and slow for large keypoint sets.
 - Ground-truth comparison.
 - General cleanup for better maintainability and extendability.
 
@@ -184,3 +219,7 @@ Tested on dataset [from this link](https://cvg.cit.tum.de/data/datasets/3drecons
 **Point cloud created with Meshroom with SIFT**
 
 ![Point cloud meshroom](images/meshroom_sift.jpg)
+
+## References
+
+[1] E.Rublee, V. Rabaud, K. Konolige i G. Bradski, „ORB: An efficient alternative to SIFT or SURF”, w 2011 International conference on computer vision, Ieee, 2011, s. 2564–2571.
